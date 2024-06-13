@@ -9,37 +9,37 @@ function App() {
   const [currentRoute, setCurrentRoute] = useState("");
 
   useEffect(() => {
-  const path = window.location.pathname;
-  //console.log(path.slice(1, path.length))
-  setCurrentRoute(path.slice(1, path.length));
+    const path = window.location.pathname.toLowerCase();
+    const pathWithoughtSlash = path.slice(1, path.length);
+    setCurrentRoute(pathWithoughtSlash);
   }, []);
-
+  
   return (
     <BrowserRouter>
       <nav className="m-1 p-1 border-info">
         <ul className="nav nav-pills">
           <li>
             <Link
-              onClick={() => setCurrentRoute("Home")}
+              onClick={() => setCurrentRoute("home")}
               className={
-                currentRoute === "Home"
+                currentRoute === "home"
                   ? "btn btn-info ms-1"
                   : "btn btn-outline-info ms-1"
               }
-              to="/Home"
+              to="/home"
             >
               Home
             </Link>
           </li>
           <li>
             <Link
-              onClick={() => setCurrentRoute("Products")}
+              onClick={() => setCurrentRoute("products")}
               className={
-                currentRoute === "Products"
+                currentRoute === "products"
                   ? "btn btn-info ms-1"
                   : "btn btn-outline-info ms-1"
               }
-              to="/Products"
+              to="/products"
             >
               Products
             </Link>
@@ -47,8 +47,8 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        <Route path="/Home" element={<Home />} />
-        <Route path="/Products" element={<Products />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/products" element={<Products />} />
       </Routes>
     </BrowserRouter>
   );
