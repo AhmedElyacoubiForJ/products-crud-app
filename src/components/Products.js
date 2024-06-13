@@ -2,8 +2,12 @@ import React from 'react'
 
 function Products() {
   return (
-    <div>
-      Products
+    <div className="p-1 m-1">
+      <div className="card">
+        <div className="card-body">
+          <h3>Products</h3>
+        </div>
+      </div>
     </div>
   )
 }
