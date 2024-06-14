@@ -4,7 +4,7 @@ function Products() {
   const [products, setProducts] = useState([
     {id: 1, name: "Computer", price: 4300, cheched: false},
     {id: 2, name: "Phone", price: 3000, cheched: false},
-    {id: 3, name: "Laptop", price: 5000, cheched: false},
+    {id: 3, name: "Laptop", price: 5000, cheched: true},
     {id: 4, name: "Tablet", price: 2000, cheched: false},
   ]);
 
