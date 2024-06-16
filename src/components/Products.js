@@ -7,14 +7,9 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { deleteProduct, getProducts, updateCheckProduct, updateProduct } from "../backend/ProductRepository";
 
 function Products() {
-  /*  const [products, setProducts] = useState([
-    {id: 1, name: "Computer", price: 4300, checked: true},
-    {id: 2, name: "Phone", price: 3000, checked: false},
-    {id: 3, name: "Laptop", price: 5000, checked: true},
-    {id: 4, name: "Tablet", price: 2000, checked: false},
-  ]); */
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -22,23 +17,38 @@ function Products() {
   }, []);
 
   const handleGetProducts = () => {
-    axios.get("http://localhost:9000/products").then((response) => {
-      const products = response.data;
-      setProducts(products)
-    }).catch((error) => {
-      console.log(error);
-    });
+    getProducts()
+      .then((products) => {
+        setProducts(products.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDeleteProduct = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
+    deleteProduct(id)
+      .then(() => {
+        //handleGetProducts();
+        setProducts(products.filter((product) => product.id!== id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const handleCheckProduct = (id) => {
-    setProducts(
-      products.map((product) =>
-        product.id === id ? { ...product, checked: !product.checked } : product
-      )
-    );
+  const handleCheckProduct = (id, product) => {
+    updateProduct(product)
+     .then((resp) => {
+        //handleGetProducts();
+        setProducts(
+          products.map((product) =>
+            product.id === id ? { ...product, checked: !product.checked } : product
+          )
+        );
+      })
+     .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -58,7 +68,7 @@ function Products() {
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Checked</th>
-                <th scope="col" colspan="2">
+                <th colSpan="2">
                   Actions
                 </th>
               </tr>
@@ -71,7 +81,7 @@ function Products() {
                   <td>{product.price}</td>
                   <td>
                     <button
-                      onClick={() => handleCheckProduct(product.id)}
+                      onClick={() => handleCheckProduct(product.id, product)}
                       className="btn btn-outline-success"
                     >
                       <FontAwesomeIcon
