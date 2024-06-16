@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -7,7 +6,7 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { deleteProduct, getProducts, updateCheckProduct, updateProduct } from "../backend/ProductRepository";
+import { deleteProduct, getProducts, updateCheckProduct } from "../backend/ProductRepository";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -37,7 +36,7 @@ function Products() {
       });
   };
   const handleCheckProduct = (id, product) => {
-    updateProduct(product)
+    updateCheckProduct(product)
      .then((resp) => {
         //handleGetProducts();
         setProducts(
