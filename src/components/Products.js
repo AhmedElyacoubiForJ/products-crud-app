@@ -1,12 +1,25 @@
 import React, {useState} from 'react'
+//import ReactDOM from 'react-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faCircle, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function Products() {
   const [products, setProducts] = useState([
-    {id: 1, name: "Computer", price: 4300, cheched: false},
-    {id: 2, name: "Phone", price: 3000, cheched: false},
-    {id: 3, name: "Laptop", price: 5000, cheched: true},
-    {id: 4, name: "Tablet", price: 2000, cheched: false},
+    {id: 1, name: "Computer", price: 4300, checked: true},
+    {id: 2, name: "Phone", price: 3000, checked: false},
+    {id: 3, name: "Laptop", price: 5000, checked: true},
+    {id: 4, name: "Tablet", price: 2000, checked: false},
   ]);
+
+  const handleDeleteProduct = (id) => {
+    setProducts(products.filter(product => product.id!== id));
+  }
+  const handleCheckProduct = (id) => {
+    setProducts(products.map(product => product.id === id
+      ? {...product, checked:!product.checked} 
+      : product
+    ));
+  }
 
   return (
     <div className="p-1 m-1">
@@ -29,13 +42,21 @@ function Products() {
             <tbody>
               {products.map(product => (
                 <tr key={product.id}>
-                  <th scope="row">{product.id}</th>
+                  <td>{product.id}</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
-                  <td>{product.cheched}</td>
                   <td>
-                    <button className="btn btn-primary">Edit</button>
-                    <button className="btn btn-danger m-2">Delete</button>
+                    <button onClick={()=> handleCheckProduct(product.id)} className='btn btn-outline-success'>
+                      <FontAwesomeIcon icon={product.checked?  faCheckCircle : faCircle}></FontAwesomeIcon>
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => handleDeleteProduct(product.id)} className="btn btn-outline-danger">
+                      <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                    </button>
+                    <button className="btn btn-outline-info m-2">
+                    <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+                    </button>
                   </td>
                 </tr>
               ))}
