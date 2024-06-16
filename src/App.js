@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Home from "./components/Home";
 import Products from "./components/Products";
+import NewProduct from "./components/NewProduct";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -44,11 +45,26 @@ function App() {
               Products
             </Link>
           </li>
+          <li>
+            <Link
+              onClick={() => setCurrentRoute("newProduct")}
+              className={
+                currentRoute === "newProduct"
+                  ? "btn btn-info ms-1"
+                  : "btn btn-outline-info ms-1"
+              }
+              to="/newProduct"
+            >
+              New Product
+            </Link>
+          </li>
         </ul>
       </nav>
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/newProduct" element={<NewProduct />} />
+        <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>
   );
