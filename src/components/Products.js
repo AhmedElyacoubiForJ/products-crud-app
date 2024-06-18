@@ -19,16 +19,16 @@ function Products() {
     currentPage: 1,
     pageSize: 4,
     keyword: "",
+    totalPages: 0,
   });
 
   const handleDeleteProduct = (id) => {
-    deleteProduct(id)
-    .then( resp => {
+    deleteProduct(id).then((resp) => {
       setPaggingState({
         ...paggingState,
-        products: paggingState.products.filter((product) => product.id!== id)
-      })
-    })
+        products: paggingState.products.filter((product) => product.id !== id),
+      });
+    });
   };
 
   useEffect(() => {
@@ -37,37 +37,52 @@ function Products() {
       paggingState.currentPage,
       paggingState.pageSize
     );
-  }, [handleDeleteProduct]);
-  
+  }, []);
+
   const handleGetProductsPaginated = (keyword, page, size) => {
     getProductsPaginated(keyword, page, size)
-     .then(resp => {
+      .then((resp) => {
+        //console.log(resp.headers.get('X-total-count'));
+        const totalElements = resp.headers.get("X-total-count");
+        let totalPages = Math.floor(totalElements / size);
+        if (totalElements % size !== 0) {
+          totalPages++;
+        }
+
         setPaggingState({
-         ...paggingState,
+          ...paggingState,
           products: resp.data,
           keyword: keyword,
           currentPage: page,
           pageSize: size,
+          totalPages: totalPages,
         });
       })
-     .catch((err) => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const handleCheckProduct = (id, product) => {
-      updateCheckProduct(product)
-      .then(resp => {
-        setPaggingState({
-         ...paggingState,
-          products: paggingState.products.map( product => {
-            if (product.id === id) {
-              product.checked =!product.checked;
-            }
-            return product;
-          }),
-        });
+    updateCheckProduct(product).then((resp) => {
+      setPaggingState({
+        ...paggingState,
+        products: paggingState.products.map((product) => {
+          if (product.id === id) {
+            product.checked = !product.checked;
+          }
+          return product;
+        }),
       });
+    });
+  };
+
+  const handleGoToPage = (page) => {
+    handleGetProductsPaginated(
+      paggingState.keyword,
+      page,
+      paggingState.pageSize
+    );
   };
 
   return (
@@ -121,6 +136,22 @@ function Products() {
               ))}
             </tbody>
           </table>
+          <ul className="nav nav-pills">
+            {new Array(paggingState.totalPages).fill(0).map((_, index) => (
+              <li key={index}>
+                <button
+                  className={
+                    paggingState.currentPage == index + 1
+                      ? "btn btn-info ms-1"
+                      : "btn btn-outline-info ms-1"
+                  }
+                  onClick={() => handleGoToPage(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

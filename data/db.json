@@ -10,19 +10,19 @@
       "id": 2,
       "name": "Phone",
       "price": 3000,
-      "checked": false
+      "checked": true
     },
     {
       "id": 3,
       "name": "Laptop",
       "price": 5000,
-      "checked": true
+      "checked": false
     },
     {
       "id": 4,
       "name": "Tablet",
       "price": 2000,
-      "checked": false
+      "checked": true
     },
     {
       "id": 5,
@@ -34,7 +34,7 @@
       "id": 6,
       "name": "Keyboard",
       "price": 2000,
-      "checked": false
+      "checked": true
     },
     {
       "id": 7,
@@ -43,10 +43,22 @@
       "checked": false
     },
     {
+      "id": 8,
       "name": "Speaker",
-      "price": "50000",
-      "checked": false,
-      "id": 8
+      "price": 5000,
+      "checked": true
+    },
+    {
+      "id": 9,
+      "name": "Headphone",
+      "price": 3000,
+      "checked": true
+    },
+    {
+      "id": 10,
+      "name": "Mousepad",
+      "price": 500,
+      "checked": false
     }
   ]
 }
