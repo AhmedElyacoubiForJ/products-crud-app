@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -9,36 +9,32 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   deleteProduct,
-  getProducts,
   updateCheckProduct,
-  getProductsPaginated,
+  getProductsPaginated
 } from "../backend/ProductRepository";
+
+import { ApplicationContext } from "../context/ProductsContext";
+
 import { useNavigate } from "react-router-dom";
 
 function Products() {
   const navigate = useNavigate();
-  const [paggingState, setPaggingState] = useState({
-    products: [],
-    currentPage: 1,
-    pageSize: 4,
-    keyword: "",
-    totalPages: 0,
-  });
+  const [appState, setAppState] = useContext(ApplicationContext);
 
   const handleDeleteProduct = (id) => {
     deleteProduct(id).then((resp) => {
-      setPaggingState({
-        ...paggingState,
-        products: paggingState.products.filter((product) => product.id !== id),
+      setAppState({
+        ...appState,
+        products: appState.products.filter((product) => product.id !== id),
       });
     });
   };
 
   useEffect(() => {
     handleGetProductsPaginated(
-      paggingState.keyword,
-      paggingState.currentPage,
-      paggingState.pageSize
+      appState.keyword,
+      appState.currentPage,
+      appState.pageSize
     );
   }, []);
 
@@ -46,14 +42,15 @@ function Products() {
     getProductsPaginated(keyword, page, size)
       .then((resp) => {
         //console.log(resp.headers.get('X-total-count'));
+        console.log(resp.data)
         const totalElements = resp.headers.get("X-total-count");
         let totalPages = Math.floor(totalElements / size);
         if (totalElements % size !== 0) {
           totalPages++;
         }
 
-        setPaggingState({
-          ...paggingState,
+        setAppState({
+          ...appState,
           products: resp.data,
           keyword: keyword,
           currentPage: page,
@@ -68,9 +65,9 @@ function Products() {
 
   const handleCheckProduct = (id, product) => {
     updateCheckProduct(product).then((resp) => {
-      setPaggingState({
-        ...paggingState,
-        products: paggingState.products.map((product) => {
+      setAppState({
+        ...appState,
+        products: appState.products.map((product) => {
           if (product.id === id) {
             product.checked = !product.checked;
           }
@@ -81,20 +78,13 @@ function Products() {
   };
 
   const handleGoToPage = (page) => {
-    handleGetProductsPaginated(
-      paggingState.keyword,
-      page,
-      paggingState.pageSize
-    );
+    console.log(page)
+    handleGetProductsPaginated(appState.keyword, page, setAppState.pageSize);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    handleGetProductsPaginated(
-      paggingState.keyword,
-      1,
-      paggingState.pageSize
-    );
+    handleGetProductsPaginated(appState.keyword, 1, appState.pageSize);
   };
 
   return (
@@ -110,10 +100,10 @@ function Products() {
                       type="text"
                       className="form-control"
                       placeholder="Search..."
-                      value={paggingState.keyword}
+                      value={appState.keyword}
                       onChange={(e) =>
-                        setPaggingState({
-                          ...paggingState,
+                        setAppState({
+                          ...appState,
                           keyword: e.target.value,
                         })
                       }
@@ -124,9 +114,9 @@ function Products() {
                       className="btn btn-success"
                       onClick={() =>
                         handleGetProductsPaginated(
-                          paggingState.keyword,
-                          paggingState.currentPage,
-                          paggingState.pageSize
+                          appState.keyword,
+                          appState.currentPage,
+                          appState.pageSize
                         )
                       }
                     >
@@ -153,7 +143,7 @@ function Products() {
                   </tr>
                 </thead>
                 <tbody>
-                  {paggingState.products.map((product) => (
+                  {appState.products.map((product) => (
                     <tr key={product.id}>
                       <td>{product.id}</td>
                       <td>{product.name}</td>
@@ -177,7 +167,10 @@ function Products() {
                         >
                           <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                         </button>
-                        <button onClick={() => navigate(`/editProduct/${product.id}`)} className="btn btn-outline-success m-2">
+                        <button
+                          onClick={() => navigate(`/editProduct/${product.id}`)}
+                          className="btn btn-outline-success m-2"
+                        >
                           <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
                         </button>
                       </td>
@@ -186,11 +179,11 @@ function Products() {
                 </tbody>
               </table>
               <ul className="nav nav-pills">
-                {new Array(paggingState.totalPages).fill(0).map((_, index) => (
+                {new Array(appState.totalPages).fill(0).map((_, index) => (
                   <li key={index}>
                     <button
                       className={
-                        paggingState.currentPage == index + 1
+                        appState.currentPage == index + 1
                           ? "btn btn-info ms-1"
                           : "btn btn-outline-info ms-1"
                       }

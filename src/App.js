@@ -6,7 +6,7 @@ import Products from "./components/Products";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ApplicationContext } from "./backend/ProductRepository.js";
+import { ApplicationContext, useAppState } from "./context/ProductsContext.js";
 
 function App() {
   const [currentRoute, setCurrentRoute] = useState("");
@@ -18,7 +18,7 @@ function App() {
   }, []);
 
   return (
-    <ApplicationContext.Provider>
+    <ApplicationContext.Provider value={useAppState()}>
       <BrowserRouter>
         <nav className="m-1 p-1 border-info">
           <ul className="nav nav-pills">

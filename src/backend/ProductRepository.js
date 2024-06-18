@@ -1,7 +1,4 @@
 import axios from "axios";
-import { createContext } from "react";
-
-export const ApplicationContext = createContext();
 
 // baseUrl configuration
 export const productsApi = axios.create({
