@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./components/Home";
 import Products from "./components/Products";
 import NewProduct from "./components/NewProduct";
+import EditProduct from "./components/EditProduct.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/newProduct" element={<NewProduct />} />
+        <Route path="/editProduct/:id" element={<EditProduct />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>

@@ -10,7 +10,7 @@
       "id": 2,
       "name": "Phone",
       "price": 3000,
-      "checked": true
+      "checked": "true"
     },
     {
       "id": 3,

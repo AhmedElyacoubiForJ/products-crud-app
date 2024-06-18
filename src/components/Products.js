@@ -13,8 +13,10 @@ import {
   updateCheckProduct,
   getProductsPaginated,
 } from "../backend/ProductRepository";
+import { useNavigate } from "react-router-dom";
 
 function Products() {
+  const navigate = useNavigate();
   const [paggingState, setPaggingState] = useState({
     products: [],
     currentPage: 1,
@@ -175,7 +177,7 @@ function Products() {
                         >
                           <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
                         </button>
-                        <button className="btn btn-outline-info m-2">
+                        <button onClick={() => navigate(`/editProduct/${product.id}`)} className="btn btn-outline-success m-2">
                           <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
                         </button>
                       </td>

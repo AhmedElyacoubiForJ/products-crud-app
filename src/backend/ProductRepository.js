@@ -31,12 +31,11 @@ export const updateCheckProduct = (product) => {
     checked: !product.checked,
   });
 };
-/* 
-export const updateProduct = (product) => {
-  return productsApi.patch(`/products/${product.id}`, {
-    ...product,
-    name: product.name,
-    price: product.price,
-    checked: product.checked,
-  });
-}; */
+
+export const getProductById = (id) => {
+  return productsApi.get(`/products/${id}`);
+}
+
+export const updateProduct = (id, product) => {
+  return productsApi.patch(`/products/${id}`, product);
+}
