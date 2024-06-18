@@ -6,17 +6,52 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { deleteProduct, getProducts, updateCheckProduct } from "../backend/ProductRepository";
+import {
+  deleteProduct,
+  getProducts,
+  updateCheckProduct,
+  getProductsPaginated,
+} from "../backend/ProductRepository";
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [paggingState, setPaggingState] = useState({
+    products: [],
+    currentPage: 1,
+    pageSize: 4,
+    keyword: "",
+  });
 
   useEffect(() => {
-    handleGetProducts();
+    //handleGetProducts();
+    handleGetProductsPaginated(
+      paggingState.keyword,
+      paggingState.currentPage,
+      paggingState.pageSize
+    );
   }, []);
 
+
+  const handleGetProductsPaginated = (keyword, page, size) => {
+    getProductsPaginated(keyword, page, size)
+     .then((resp) => {
+       console.log(resp.data)
+        setPaggingState({
+         ...paggingState,
+          products: resp.data,
+          keyword: keyword,
+          currentPage: page,
+          pageSize: size,
+        });
+      })
+     .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const handleGetProducts = () => {
-    getProducts()
+    //getProducts()
+    getProductsPaginated()
       .then((products) => {
         setProducts(products.data);
       })
@@ -29,7 +64,7 @@ function Products() {
     deleteProduct(id)
       .then(() => {
         //handleGetProducts();
-        setProducts(products.filter((product) => product.id!== id));
+        setProducts(products.filter((product) => product.id !== id));
       })
       .catch((err) => {
         console.log(err);
@@ -37,15 +72,17 @@ function Products() {
   };
   const handleCheckProduct = (id, product) => {
     updateCheckProduct(product)
-     .then((resp) => {
+      .then((resp) => {
         //handleGetProducts();
         setProducts(
           products.map((product) =>
-            product.id === id ? { ...product, checked: !product.checked } : product
+            product.id === id
+              ? { ...product, checked: !product.checked }
+              : product
           )
         );
       })
-     .catch((err) => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -67,13 +104,11 @@ function Products() {
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Checked</th>
-                <th colSpan="2">
-                  Actions
-                </th>
+                <th colSpan="2">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {paggingState.products.map((product) => (
                 <tr key={product.id}>
                   <td>{product.id}</td>
                   <td>{product.name}</td>

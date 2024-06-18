@@ -9,6 +9,10 @@ export const getProducts = () => {
   return productsApi.get("/products");
 };
 
+export const getProductsPaginated = (keyword="", page = 1, size = 4) => {
+  return productsApi.get(`/products?name_like=${keyword}&_page=${page}&_limit=${size}`);
+};
+
 export const getProduct = (id) => {
   return productsApi.get(`/products/${id}`);
 };

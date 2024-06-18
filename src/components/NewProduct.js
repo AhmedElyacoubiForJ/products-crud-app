@@ -15,7 +15,11 @@ function NewProduct() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(product);
-    addProduct(product);
+    addProduct(product).then(response => {
+      alert(JSON.stringify(response.data));
+    }).catch(err => {
+      alert(JSON.stringify(err.response.data));
+    });
   };
 
   return (
