@@ -1,4 +1,7 @@
 import axios from "axios";
+import { createContext } from "react";
+
+export const ApplicationContext = createContext();
 
 // baseUrl configuration
 export const productsApi = axios.create({
@@ -9,8 +12,10 @@ export const getProducts = () => {
   return productsApi.get("/products");
 };
 
-export const getProductsPaginated = (keyword="", page = 1, size = 4) => {
-  return productsApi.get(`/products?name_like=${keyword}&_page=${page}&_limit=${size}`);
+export const getProductsPaginated = (keyword = "", page = 1, size = 4) => {
+  return productsApi.get(
+    `/products?name_like=${keyword}&_page=${page}&_limit=${size}`
+  );
 };
 
 export const getProduct = (id) => {
@@ -34,8 +39,8 @@ export const updateCheckProduct = (product) => {
 
 export const getProductById = (id) => {
   return productsApi.get(`/products/${id}`);
-}
+};
 
 export const updateProduct = (id, product) => {
   return productsApi.patch(`/products/${id}`, product);
-}
+};
