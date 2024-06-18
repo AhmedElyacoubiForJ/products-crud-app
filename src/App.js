@@ -6,7 +6,6 @@ import Products from "./components/Products";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ApplicationContext, useAppState } from "./context/ProductsContext.js";
 
 function App() {
   const [currentRoute, setCurrentRoute] = useState("");
@@ -18,7 +17,6 @@ function App() {
   }, []);
 
   return (
-    <ApplicationContext.Provider value={useAppState()}>
       <BrowserRouter>
         <nav className="m-1 p-1 border-info">
           <ul className="nav nav-pills">
@@ -71,7 +69,6 @@ function App() {
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </BrowserRouter>
-    </ApplicationContext.Provider>
   );
 }
 

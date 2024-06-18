@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addProduct, getProductById, updateProduct } from "../backend/ProductRepository";
+import { getProductById, updateProduct } from "../backend/ProductRepository";
 import { useParams } from "react-router-dom";
 
 function EditProduct() {
@@ -27,7 +27,6 @@ function EditProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //const updatedProduct = { ...product, id: id };
     updateProduct(id, product);
   };
 
