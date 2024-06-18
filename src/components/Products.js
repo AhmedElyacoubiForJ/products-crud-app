@@ -14,7 +14,6 @@ import {
 } from "../backend/ProductRepository";
 
 function Products() {
-  const [products, setProducts] = useState([]);
   const [paggingState, setPaggingState] = useState({
     products: [],
     currentPage: 1,
@@ -22,20 +21,27 @@ function Products() {
     keyword: "",
   });
 
+  const handleDeleteProduct = (id) => {
+    deleteProduct(id)
+    .then( resp => {
+      setPaggingState({
+        ...paggingState,
+        products: paggingState.products.filter((product) => product.id!== id)
+      })
+    })
+  };
+
   useEffect(() => {
-    //handleGetProducts();
     handleGetProductsPaginated(
       paggingState.keyword,
       paggingState.currentPage,
       paggingState.pageSize
     );
-  }, []);
-
-
+  }, [handleDeleteProduct]);
+  
   const handleGetProductsPaginated = (keyword, page, size) => {
     getProductsPaginated(keyword, page, size)
-     .then((resp) => {
-       console.log(resp.data)
+     .then(resp => {
         setPaggingState({
          ...paggingState,
           products: resp.data,
@@ -49,41 +55,18 @@ function Products() {
       });
   }
 
-  const handleGetProducts = () => {
-    //getProducts()
-    getProductsPaginated()
-      .then((products) => {
-        setProducts(products.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleDeleteProduct = (id) => {
-    deleteProduct(id)
-      .then(() => {
-        //handleGetProducts();
-        setProducts(products.filter((product) => product.id !== id));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const handleCheckProduct = (id, product) => {
-    updateCheckProduct(product)
-      .then((resp) => {
-        //handleGetProducts();
-        setProducts(
-          products.map((product) =>
-            product.id === id
-              ? { ...product, checked: !product.checked }
-              : product
-          )
-        );
-      })
-      .catch((err) => {
-        console.log(err);
+      updateCheckProduct(product)
+      .then(resp => {
+        setPaggingState({
+         ...paggingState,
+          products: paggingState.products.map( product => {
+            if (product.id === id) {
+              product.checked =!product.checked;
+            }
+            return product;
+          }),
+        });
       });
   };
 
