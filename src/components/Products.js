@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -10,25 +10,16 @@ import {
 import {
   deleteProduct,
   updateCheckProduct,
-  getProductsPaginated
+  getProductsPaginated,
 } from "../backend/ProductRepository";
 
-import { ApplicationContext } from "../context/ProductsContext";
+import { ProductsContext } from "../context/ProductsContext";
 
 import { useNavigate } from "react-router-dom";
 
 function Products() {
   const navigate = useNavigate();
-  const [appState, setAppState] = useContext(ApplicationContext);
-
-  const handleDeleteProduct = (id) => {
-    deleteProduct(id).then((resp) => {
-      setAppState({
-        ...appState,
-        products: appState.products.filter((product) => product.id !== id),
-      });
-    });
-  };
+  const [appState, setAppState] = useContext(ProductsContext);
 
   useEffect(() => {
     handleGetProductsPaginated(
@@ -39,24 +30,27 @@ function Products() {
   }, []);
 
   const handleGetProductsPaginated = (keyword, page, size) => {
+    console.log("handleGetProductsPaginated");
+    console.log("Keyword: " + keyword + ", Page: " + page + ", Size:"+  size);
+    
     getProductsPaginated(keyword, page, size)
       .then((resp) => {
-        //console.log(resp.headers.get('X-total-count'));
-        console.log(resp.data)
         const totalElements = resp.headers.get("X-total-count");
-        let totalPages = Math.floor(totalElements / size);
-        if (totalElements % size !== 0) {
-          totalPages++;
+        let totalPages = Math.floor(totalElements / appState.pageSize);
+        if (totalElements % appState.pageSize !== 0) {
+          totalPages = totalPages + 1;
         }
-
+        console.log("getProductsPaginated")
+        //console.log("TotalElements: " + totalElements + ", TotalPages: " + totalPages);
         setAppState({
           ...appState,
           products: resp.data,
-          keyword: keyword,
-          currentPage: page,
-          pageSize: size,
           totalPages: totalPages,
+          currentPage: page,
+          keyword: keyword,
         });
+        console.log("TotalPages: " + totalPages + ", PageSize: " + appState.pageSize + ", CurrentPage: "+ appState.currentPage 
+          + ", Number of products: " + resp.data.length);
       })
       .catch((err) => {
         console.log(err);
@@ -78,13 +72,22 @@ function Products() {
   };
 
   const handleGoToPage = (page) => {
-    console.log(page)
+    console.log("handleGoToPage: Page: " + page);
     handleGetProductsPaginated(appState.keyword, page, setAppState.pageSize);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     handleGetProductsPaginated(appState.keyword, 1, appState.pageSize);
+  };
+
+  const handleDeleteProduct = (id) => {
+    deleteProduct(id).then((resp) => {
+      setAppState({
+        ...appState,
+        products: appState.products.filter((product) => product.id !== id),
+      });
+    });
   };
 
   return (
@@ -183,7 +186,7 @@ function Products() {
                   <li key={index}>
                     <button
                       className={
-                        appState.currentPage == index + 1
+                        appState.currentPage === index + 1
                           ? "btn btn-info ms-1"
                           : "btn btn-outline-info ms-1"
                       }

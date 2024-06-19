@@ -1,15 +1,16 @@
 import { createContext, useState } from "react";
 
-export const ApplicationContext = createContext();
+export const ProductsContext = createContext();
 
 export const useAppState = () => {
   const initialState = {
-    products: [],
+    keyword: "",
     currentPage: 1,
     pageSize: 4,
-    keyword: "",
     totalPages: 0,
+    products: [],
   };
+  
   const appState = useState(initialState);
 
   return appState;

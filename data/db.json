@@ -7,12 +7,6 @@
       "checked": false
     },
     {
-      "id": 2,
-      "name": "Phone",
-      "price": 3000,
-      "checked": "true"
-    },
-    {
       "id": 3,
       "name": "Laptop",
       "price": 5000,
