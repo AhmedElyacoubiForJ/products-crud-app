@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBarItem = ({ to, currentRoute, setCurrentRoute, text }) => {
+const NavBarItem = ({ to, currentRoute, setCurrentRoute, text, key }) => {
   return (
-    <li>
+    <li key={key}>
       <Link
         onClick={() => setCurrentRoute(to)}
         className={

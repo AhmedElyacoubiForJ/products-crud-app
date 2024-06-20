@@ -7,8 +7,7 @@ import Products from "./components/Products";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct.js";
 import { ProductsContext, useAppState } from "./context/ProductsContext.js";
-import ProductsInfo from "./components/ProductsInfo.js";
-import NavBarItem from "./components/NavBarItem"
+import AppNavbar from "./components/AppNavbar.js";
 
 function App() {
   const [currentRoute, setCurrentRoute] = useState("");
@@ -22,7 +21,8 @@ function App() {
   return (
     <ProductsContext.Provider value={useAppState()}>
       <BrowserRouter>
-        <nav className="m-1 p-1 border-info navbar navbar-expand-lg navbar-light bg-light">
+        <AppNavbar />
+        {/* <nav className="m-1 p-1 border-info navbar navbar-expand-lg navbar-light bg-light">
           <ul className="nav nav-pills">
             <NavBarItem to="home" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Home" />
             <NavBarItem to="products" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Products"/>
@@ -33,7 +33,7 @@ function App() {
               <ProductsInfo />
             </li>
           </ul>
-        </nav>
+        </nav> */}
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/products" element={<Products />} />
