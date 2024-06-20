@@ -8,6 +8,7 @@ import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct.js";
 import { ProductsContext, useAppState } from "./context/ProductsContext.js";
 import ProductsInfo from "./components/ProductsInfo.js";
+import NavBarItem from "./components/NavBarItem"
 
 function App() {
   const [currentRoute, setCurrentRoute] = useState("");
@@ -23,45 +24,9 @@ function App() {
       <BrowserRouter>
         <nav className="m-1 p-1 border-info navbar navbar-expand-lg navbar-light bg-light">
           <ul className="nav nav-pills">
-            <li>
-              <Link
-                onClick={() => setCurrentRoute("home")}
-                className={
-                  currentRoute === "home"
-                    ? "btn btn-info ms-1"
-                    : "btn btn-outline-info ms-1"
-                }
-                to="/home"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                onClick={() => setCurrentRoute("products")}
-                className={
-                  currentRoute === "products"
-                    ? "btn btn-info ms-1"
-                    : "btn btn-outline-info ms-1"
-                }
-                to="/products"
-              >
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link
-                onClick={() => setCurrentRoute("newProduct")}
-                className={
-                  currentRoute === "newProduct"
-                    ? "btn btn-info ms-1"
-                    : "btn btn-outline-info ms-1"
-                }
-                to="/newProduct"
-              >
-                New Product
-              </Link>
-            </li>
+            <NavBarItem to="home" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Home" />
+            <NavBarItem to="products" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Products"/>
+            <NavBarItem to="newProduct" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="New Product"/>
           </ul>
           <ul className="nav navbar-nav">
             <li>

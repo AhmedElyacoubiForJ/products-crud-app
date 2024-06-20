@@ -96,10 +96,7 @@ function Products() {
         <div className="col-md-6">
           <div className="card mt-1">
             <div className="card-body">
-              {/* search form */}
-              <SearchForm
-                handleGetProductsPaginated={handleGetProductsPaginated}
-              />
+              <SearchForm handleGetProductsPaginated={handleGetProductsPaginated} />
             </div>
           </div>
           <div className="card mt-1">
