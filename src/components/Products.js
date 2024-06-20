@@ -4,7 +4,6 @@ import {
   faCheckCircle,
   faCircle,
   faEdit,
-  faSearch,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -16,14 +15,18 @@ import {
 import { ProductsContext } from "../context/ProductsContext";
 
 import { useNavigate } from "react-router-dom";
+import SearchForm from "./SearchForm";
 
 function Products() {
   const navigate = useNavigate();
   const [appState, setAppState] = useContext(ProductsContext);
-  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    handleGetProductsPaginated(appState.keyword, appState.currentPage, appState.pageSize);
+    handleGetProductsPaginated(
+      appState.keyword,
+      appState.currentPage,
+      appState.pageSize
+    );
   }, []);
 
   const getTotalPages = (resp, size) => {
@@ -33,7 +36,7 @@ function Products() {
       totalPages = totalPages + 1;
     }
     return totalPages;
-  }
+  };
 
   const handleGetProductsPaginated = (keyword, page, size) => {
     getProductsPaginated(keyword, page, size)
@@ -46,7 +49,7 @@ function Products() {
           totalPages: totalPages,
           currentPage: page,
           keyword: keyword,
-          pageSize: size
+          pageSize: size,
         });
       })
       .catch((err) => console.log(err));
@@ -72,17 +75,19 @@ function Products() {
     handleGetProductsPaginated(appState.keyword, page, appState.pageSize);
   };
 
-  const handleSearch = (e) => {
+ /*  const handleSearch = (e) => {
     e.preventDefault();
     handleGetProductsPaginated(searchText, 1, appState.pageSize);
-  };
+  }; */
 
   const handleDeleteProduct = (id) => {
     // update DB
     deleteProduct(id)
       .then((resp) => {
         // update UI
-        const newProducts = appState.products.filter((product) => product.id !== id);
+        const newProducts = appState.products.filter(
+          (product) => product.id !== id
+        );
         setAppState({ ...appState, products: newProducts });
       })
       .catch((err) => console.log(err));
@@ -94,24 +99,8 @@ function Products() {
         <div className="col-md-6">
           <div className="card mt-1">
             <div className="card-body">
-              <form onSubmit={(e) => handleSearch(e)}>
-                <div className="row g-2">
-                  <div className="col-auto">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Search..."
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-auto">
-                    <button className="btn btn-success">
-                      <FontAwesomeIcon icon={faSearch} />
-                    </button>
-                  </div>
-                </div>
-              </form>
+              {/* search form */}
+              <SearchForm handleGetProductsPaginated={handleGetProductsPaginated}/>
             </div>
           </div>
           <div className="card mt-1">
