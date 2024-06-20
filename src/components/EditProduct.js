@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { addProduct, getProductById, updateProduct } from "../backend/ProductRepository";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
+import {
+  getProductById,
+  updateProduct,
+} from "../backend/ProductRepository";
 
 function EditProduct() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState({
     name: "",
@@ -14,23 +19,21 @@ function EditProduct() {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-
   const handleGetProductById = (id) => {
     getProductById(id)
-      .then((resp) => {
-        setProduct(resp.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .then((resp) => setProduct(resp.data))
+    .catch((err) => console.log(err));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //const updatedProduct = { ...product, id: id };
-    updateProduct(id, product);
+    updateProduct(id, product)
+    .then((resp) => {
+      //(JSON.stringify(resp.data));
+      navigate("/products");
+    })
+    .catch((err) => console.log(err));
   };
-
 
   useEffect(() => {
     handleGetProductById(id);
@@ -44,7 +47,7 @@ function EditProduct() {
             <h3>Edit Product</h3>
           </div>
           <div className="card-body">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">
                   Name:
@@ -79,7 +82,7 @@ function EditProduct() {
                   type="checkbox"
                   name="checked"
                   id="checked"
-                  //checked={product.checked? true : false}
+                  checked={product.checked}
                   value={product.checked}
                 />
                 <label className="form-check-label" htmlFor="checked">

@@ -7,6 +7,7 @@ import Products from "./components/Products";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct.js";
 import { ProductsContext, useAppState } from "./context/ProductsContext.js";
+import ProductsInfo from "./components/ProductsInfo.js";
 
 function App() {
   const [currentRoute, setCurrentRoute] = useState("");
@@ -20,7 +21,7 @@ function App() {
   return (
     <ProductsContext.Provider value={useAppState()}>
       <BrowserRouter>
-        <nav className="m-1 p-1 border-info">
+        <nav className="m-1 p-1 border-info navbar navbar-expand-lg navbar-light bg-light">
           <ul className="nav nav-pills">
             <li>
               <Link
@@ -60,6 +61,11 @@ function App() {
               >
                 New Product
               </Link>
+            </li>
+          </ul>
+          <ul className="nav navbar-nav">
+            <li>
+              <ProductsInfo />
             </li>
           </ul>
         </nav>

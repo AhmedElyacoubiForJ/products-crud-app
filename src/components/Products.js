@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -20,24 +20,25 @@ import { useNavigate } from "react-router-dom";
 function Products() {
   const navigate = useNavigate();
   const [appState, setAppState] = useContext(ProductsContext);
-  const [searchText, setSearchText] = useContext("");
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    handleGetProductsPaginated(
-      appState.keyword,
-      appState.currentPage,
-      appState.pageSize
-    );
+    handleGetProductsPaginated(appState.keyword, appState.currentPage, appState.pageSize);
   }, []);
+
+  const getTotalPages = (resp, size) => {
+    const totalElements = resp.headers.get("X-Total-Count");
+    let totalPages = Math.floor(totalElements / size);
+    if (totalElements % size !== 0) {
+      totalPages = totalPages + 1;
+    }
+    return totalPages;
+  }
 
   const handleGetProductsPaginated = (keyword, page, size) => {
     getProductsPaginated(keyword, page, size)
       .then((resp) => {
-        const totalElements = resp.headers.get("X-Total-Count");
-        let totalPages = Math.floor(totalElements / size);
-        if (totalElements % size !== 0) {
-          totalPages = totalPages + 1;
-        }
+        const totalPages = getTotalPages(resp, size);
 
         setAppState({
           ...appState,
@@ -100,7 +101,7 @@ function Products() {
                       type="text"
                       className="form-control"
                       placeholder="Search..."
-                      value={appState.keyword}
+                      value={searchText}
                       onChange={(e) => setSearchText(e.target.value)}
                     />
                   </div>
