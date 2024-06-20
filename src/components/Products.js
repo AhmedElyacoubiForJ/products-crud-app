@@ -16,6 +16,7 @@ import { ProductsContext } from "../context/ProductsContext";
 
 import { useNavigate } from "react-router-dom";
 import SearchForm from "./SearchForm";
+import ProductItem from "./ProductItem";
 
 function Products() {
   const navigate = useNavigate();
@@ -75,11 +76,6 @@ function Products() {
     handleGetProductsPaginated(appState.keyword, page, appState.pageSize);
   };
 
- /*  const handleSearch = (e) => {
-    e.preventDefault();
-    handleGetProductsPaginated(searchText, 1, appState.pageSize);
-  }; */
-
   const handleDeleteProduct = (id) => {
     // update DB
     deleteProduct(id)
@@ -100,7 +96,9 @@ function Products() {
           <div className="card mt-1">
             <div className="card-body">
               {/* search form */}
-              <SearchForm handleGetProductsPaginated={handleGetProductsPaginated}/>
+              <SearchForm
+                handleGetProductsPaginated={handleGetProductsPaginated}
+              />
             </div>
           </div>
           <div className="card mt-1">
@@ -120,35 +118,11 @@ function Products() {
                 </thead>
                 <tbody>
                   {appState.products.map((product) => (
-                    <tr key={product.id}>
-                      <td>{product.id}</td>
-                      <td>{product.name}</td>
-                      <td>{product.price}</td>
-                      <td>
-                        <button
-                          onClick={() => handleCheckProduct(product)}
-                          className="btn btn-outline-success"
-                        >
-                          <FontAwesomeIcon
-                            icon={product.checked ? faCheckCircle : faCircle}
-                          ></FontAwesomeIcon>
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleDeleteProduct(product.id)}
-                          className="btn btn-outline-danger"
-                        >
-                          <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                        </button>
-                        <button
-                          onClick={() => navigate(`/editProduct/${product.id}`)}
-                          className="btn btn-outline-success m-2"
-                        >
-                          <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                        </button>
-                      </td>
-                    </tr>
+                    <ProductItem
+                      product={product}
+                      handleCheckProduct={handleCheckProduct}
+                      handleDeleteProduct={handleDeleteProduct}
+                    />
                   ))}
                 </tbody>
               </table>
