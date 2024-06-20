@@ -30,11 +30,7 @@ const AppNavbar = () => {
           />
         ))}
       </ul>
-      <ul className="nav navbar-nav">
-        <li>
-          <ProductsInfo />
-        </li>
-      </ul>
+      <ProductsInfo />
     </nav>
   );
 };

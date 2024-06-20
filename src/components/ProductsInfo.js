@@ -5,12 +5,16 @@ const ProductsInfo = () => {
   const [appState, setAppState] = useContext(ProductsContext);
 
   return (
-    <button type="button" className="btn btn-primary position-relative">
-      Shopping card
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {appState.products.length}
-      </span>
-    </button>
+    <ul className="nav navbar-nav">
+      <li>
+        <button type="button" className="btn btn-primary position-relative">
+          Shopping card
+          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {appState.products.length}
+          </span>
+        </button>
+      </li>
+    </ul>
   );
 };
 

@@ -22,18 +22,6 @@ function App() {
     <ProductsContext.Provider value={useAppState()}>
       <BrowserRouter>
         <AppNavbar />
-        {/* <nav className="m-1 p-1 border-info navbar navbar-expand-lg navbar-light bg-light">
-          <ul className="nav nav-pills">
-            <NavBarItem to="home" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Home" />
-            <NavBarItem to="products" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="Products"/>
-            <NavBarItem to="newProduct" currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} text="New Product"/>
-          </ul>
-          <ul className="nav navbar-nav">
-            <li>
-              <ProductsInfo />
-            </li>
-          </ul>
-        </nav> */}
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/products" element={<Products />} />
