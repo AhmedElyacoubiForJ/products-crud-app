@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 function Products() {
   const navigate = useNavigate();
   const [appState, setAppState] = useContext(ProductsContext);
+  const [searchText, setSearchText] = useContext("");
 
   useEffect(() => {
     handleGetProductsPaginated(
@@ -30,64 +31,60 @@ function Products() {
   }, []);
 
   const handleGetProductsPaginated = (keyword, page, size) => {
-    console.log("handleGetProductsPaginated");
-    console.log("Keyword: " + keyword + ", Page: " + page + ", Size:"+  size);
-    
     getProductsPaginated(keyword, page, size)
       .then((resp) => {
-        const totalElements = resp.headers.get("X-total-count");
-        let totalPages = Math.floor(totalElements / appState.pageSize);
-        if (totalElements % appState.pageSize !== 0) {
+        const totalElements = resp.headers.get("X-Total-Count");
+        let totalPages = Math.floor(totalElements / size);
+        if (totalElements % size !== 0) {
           totalPages = totalPages + 1;
         }
-        console.log("getProductsPaginated")
-        //console.log("TotalElements: " + totalElements + ", TotalPages: " + totalPages);
+
         setAppState({
           ...appState,
           products: resp.data,
           totalPages: totalPages,
           currentPage: page,
           keyword: keyword,
+          pageSize: size
         });
-        console.log("TotalPages: " + totalPages + ", PageSize: " + appState.pageSize + ", CurrentPage: "+ appState.currentPage 
-          + ", Number of products: " + resp.data.length);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
 
-  const handleCheckProduct = (id, product) => {
-    updateCheckProduct(product).then((resp) => {
-      setAppState({
-        ...appState,
-        products: appState.products.map((product) => {
-          if (product.id === id) {
-            product.checked = !product.checked;
+  const handleCheckProduct = (product) => {
+    // update DB
+    updateCheckProduct(product)
+      .then((resp) => {
+        // update UI
+        const newProducts = appState.products.map((p) => {
+          if (p.id === product.id) {
+            p.checked = !p.checked;
           }
-          return product;
-        }),
-      });
-    });
+          return p;
+        });
+        setAppState({ ...appState, products: newProducts });
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleGoToPage = (page) => {
-    console.log("handleGoToPage: Page: " + page);
-    handleGetProductsPaginated(appState.keyword, page, setAppState.pageSize);
+    handleGetProductsPaginated(appState.keyword, page, appState.pageSize);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    handleGetProductsPaginated(appState.keyword, 1, appState.pageSize);
+    handleGetProductsPaginated(searchText, 1, appState.pageSize);
   };
 
   const handleDeleteProduct = (id) => {
-    deleteProduct(id).then((resp) => {
-      setAppState({
-        ...appState,
-        products: appState.products.filter((product) => product.id !== id),
-      });
-    });
+    // update DB
+    deleteProduct(id)
+      .then((resp) => {
+        // update UI
+        const newProducts = appState.products.filter((product) => product.id !== id);
+        setAppState({ ...appState, products: newProducts });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -104,25 +101,11 @@ function Products() {
                       className="form-control"
                       placeholder="Search..."
                       value={appState.keyword}
-                      onChange={(e) =>
-                        setAppState({
-                          ...appState,
-                          keyword: e.target.value,
-                        })
-                      }
+                      onChange={(e) => setSearchText(e.target.value)}
                     />
                   </div>
                   <div className="col-auto">
-                    <button
-                      className="btn btn-success"
-                      onClick={() =>
-                        handleGetProductsPaginated(
-                          appState.keyword,
-                          appState.currentPage,
-                          appState.pageSize
-                        )
-                      }
-                    >
+                    <button className="btn btn-success">
                       <FontAwesomeIcon icon={faSearch} />
                     </button>
                   </div>
@@ -153,9 +136,7 @@ function Products() {
                       <td>{product.price}</td>
                       <td>
                         <button
-                          onClick={() =>
-                            handleCheckProduct(product.id, product)
-                          }
+                          onClick={() => handleCheckProduct(product)}
                           className="btn btn-outline-success"
                         >
                           <FontAwesomeIcon
