@@ -1,58 +1,64 @@
 {
   "products": [
-    {
-      "id": 1,
-      "name": "Computer",
-      "price": "4300545",
-      "checked": false
-    },
-    {
-      "id": 2,
-      "name": "Phone",
-      "price": 3000,
-      "checked": false
-    },
-    {
-      "id": 3,
-      "name": "Laptop",
-      "price": 5000,
-      "checked": true
-    },
-    {
-      "id": 4,
-      "name": "Tablet",
-      "price": 2000,
-      "checked": false
-    },
-    {
-      "id": 5,
-      "name": "Mouse",
-      "price": 1000,
-      "checked": false
-    },
-    {
-      "id": 6,
-      "name": "Keyboard",
-      "price": 2000,
-      "checked": false
-    },
-    {
-      "id": 7,
-      "name": "Monitor",
-      "price": 10000,
-      "checked": false
-    },
-    {
-      "id": 8,
-      "name": "Speaker",
-      "price": 5000,
-      "checked": false
-    },
-    {
-      "id": 9,
-      "name": "Headphone",
-      "price": 3000,
-      "checked": false
-    }
+      {
+          "id": 1,
+          "name": "Computer",
+          "price": 4300,
+          "checked": false
+      },
+      {
+          "id": 2,
+          "name": "Phone",
+          "price": 3000,
+          "checked": false
+      },
+      {
+          "id": 3,
+          "name": "Laptop",
+          "price": 5000,
+          "checked": true
+      },
+      {
+          "id": 4,
+          "name": "Tablet",
+          "price": 2000,
+          "checked": false
+      },
+      {
+          "id": 5,
+          "name": "Mouse",
+          "price": 1000,
+          "checked": false
+      },
+      {
+          "id": 6,
+          "name": "Keyboard",
+          "price": 2000,
+          "checked": false
+      },
+      {
+          "id": 7,
+          "name": "Monitor",
+          "price": 10000,
+          "checked": false
+      },
+      {
+          "id": 8,
+          "name": "Speaker",
+          "price": 5000,
+          "checked": false
+      },
+      {
+          "id": 9,
+          "name": "Headphone",
+          "price": 3000,
+          "checked": false
+      },
+      {
+          "id": 10,
+          "name": "Mousepad",
+          "price": 500,
+          "checked": false
+      }
   ]
 }

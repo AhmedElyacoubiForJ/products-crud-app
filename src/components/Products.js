@@ -17,6 +17,7 @@ import { ProductsContext } from "../context/ProductsContext";
 import { useNavigate } from "react-router-dom";
 import SearchForm from "./SearchForm";
 import ProductItem from "./ProductItem";
+import PagginationNav from "./PagginationNav";
 
 function Products() {
   const navigate = useNavigate();
@@ -126,22 +127,11 @@ function Products() {
                   ))}
                 </tbody>
               </table>
-              <ul className="nav nav-pills">
-                {new Array(appState.totalPages).fill(0).map((_, index) => (
-                  <li key={index}>
-                    <button
-                      className={
-                        appState.currentPage === index + 1
-                          ? "btn btn-info ms-1"
-                          : "btn btn-outline-info ms-1"
-                      }
-                      onClick={() => handleGoToPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <PagginationNav
+                totalPages={appState.totalPages}
+                currentPage={appState.currentPage}
+                handleGoToPage={handleGoToPage}
+              />
             </div>
           </div>
         </div>
